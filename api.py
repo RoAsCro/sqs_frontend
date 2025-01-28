@@ -19,7 +19,6 @@ router = Blueprint("messages", __name__, url_prefix="/")
 
 @router.post("/")
 def post_message():
-    print(high_priority)
     message = request.json
     if "title" in message and "message" in message and "priority" in message:
         match message["priority"]:
