@@ -4,10 +4,15 @@ from flask import Blueprint, request
 from dotenv import load_dotenv
 
 load_dotenv()
-sqs = boto3.client("sqs", region_name='us-east-1')
 high_priority = getenv("HIGH_PRIORITY_QUEUE")
 access_id = getenv("ACCESS_ID")
 access_key = getenv("ACCESS_KEY")
+
+sqs = boto3.client("sqs",
+                   region_name='us-east-1',
+                   aws_access_key_id=access_id,
+                   aws_secret_access_key=access_key)
+
 
 router = Blueprint("messages", __name__, url_prefix="/")
 
@@ -28,7 +33,10 @@ def post_message():
                          MessageBody=f"Priority: {message['priority']}"
                                      f"{message['title']}: {message['message']}"
                          )
-        test_message()
+        return "message sent", 200
+    else:
+        return "failed to send", 500
+        # test_message()
 
 
 def test_message():
