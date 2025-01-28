@@ -6,8 +6,8 @@ from dotenv import load_dotenv
 load_dotenv()
 high_priority = getenv("HIGH_PRIORITY_QUEUE")
 mid_priority = getenv("MID_PRIORITY_QUEUE")
-access_id = getenv("ACCESS_ID")
-access_key = getenv("ACCESS_KEY")
+access_id = getenv("AWS_ACCESS_KEY_ID")
+access_key = getenv("AWS_SECRET_ACCESS_KEY")
 
 sqs = boto3.client("sqs",
                    region_name='us-east-1',
