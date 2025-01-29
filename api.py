@@ -3,7 +3,6 @@ from os import getenv
 import boto3
 from flask import Blueprint, request
 from dotenv import load_dotenv
-from flask_cors import cross_origin
 
 load_dotenv()
 high_priority = getenv("HIGH_PRIORITY_QUEUE")
@@ -17,7 +16,6 @@ sqs = boto3.client("sqs",
                    aws_access_key_id=access_id,
                    aws_secret_access_key=access_key
                    )
-
 
 router = Blueprint("messages", __name__, url_prefix="/api")
 
@@ -55,5 +53,4 @@ def get_options():
 
 @router.get("/health")
 def health_check():
-    return 200
-
+    return 'Healthy', 200
