@@ -40,7 +40,7 @@ def post_message():
             response = sqs.send_message(QueueUrl=queue_url,
                              DelaySeconds=30,
                              MessageBody=json.dumps(message))
-        except exceptions.ClientError as e :
+        except exceptions.ClientError as ex :
             return "Failed to send - internal server error", 500
 
         message_id = response["MessageId"]
