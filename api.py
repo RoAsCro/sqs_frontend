@@ -3,6 +3,7 @@ from os import getenv
 import boto3
 from flask import Blueprint, request
 from dotenv import load_dotenv
+from flask_cors import cross_origin
 
 load_dotenv()
 high_priority = getenv("HIGH_PRIORITY_QUEUE")
@@ -18,7 +19,7 @@ sqs = boto3.client("sqs",
                    )
 
 
-router = Blueprint("messages", __name__, url_prefix="/")
+router = Blueprint("messages", __name__, url_prefix="/api")
 
 
 @router.post("/")

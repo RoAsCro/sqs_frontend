@@ -2,11 +2,9 @@ from flask import Flask
 from api import router
 
 def create_app():
-    app = Flask(__name__)
-
-    app.register_blueprint(router)
-
-    return app
+    api = Flask(__name__)
+    api.register_blueprint(router)
+    return api
 
 
 if __name__ == "__main__":
