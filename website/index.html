@@ -7,7 +7,7 @@
 
 </head>
 <body>
-    <form class="needs-validation" novalidate>
+    <form id="submission-form" novalidate>
         <div class="ms-3 pe-5 me-5 pt-3">
             <div class="mb-3">
                 <label for="selection" >Priority</label>
@@ -35,18 +35,13 @@
     <script language="JavaScript">
         (() => {
         'use strict'
-          const forms = document.querySelectorAll('.needs-validation')
-          Array.from(forms).forEach(form => {
+          const form = document.getElementById("submission-form")
             form.addEventListener('submit', event => {
-              if (!form.checkValidity() || document.getElementById("selection").selectedIndex === 0) {
+              if (!form.checkValidity()) {
                 event.preventDefault()
-                event.stopPropagation()
               }
-
-
               form.classList.add('was-validated')
             }, false)
-          })
         })()
 
     </script>
