@@ -1,3 +1,4 @@
+import json
 from os import getenv
 import boto3
 from flask import Blueprint, request
@@ -33,8 +34,7 @@ def post_message():
 
         sqs.send_message(QueueUrl=queue_url,
                          DelaySeconds=30,
-                         MessageBody=f"Priority: {message['priority']}\n"
-                                     f"{message['title']}: {message['message']}"
+                         MessageBody=json.dumps(message)
                          )
         return "message sent", 200
     else:
