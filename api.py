@@ -1,6 +1,7 @@
 import json
 from os import getenv
 import boto3
+from botocore import exceptions
 from flask import Blueprint, request
 from dotenv import load_dotenv
 
@@ -35,14 +36,17 @@ def post_message():
             case _:
                 return "Unrecognised priority level - should be either low, mid, or high", 400
 
-        response = sqs.send_message(QueueUrl=queue_url,
-                         DelaySeconds=30,
-                         MessageBody=json.dumps(message),
-                         )
-        message_id = response["MessageId"]
+        try :
+            response = sqs.send_message(QueueUrl=queue_url,
+                             DelaySeconds=30,
+                             MessageBody=json.dumps(message))
+        except exceptions.ClientError as e :
+            return "Failed to send - internal server error", 500
 
+        message_id = response["MessageId"]
         return (json.dumps({'message': 'Message sent',
                 'message_id': message_id})), 200
+
     else:
         return (("Failed to send - message must include a priority (low, medium, or high)"
                 ", a title of at least one character, and a message."),
