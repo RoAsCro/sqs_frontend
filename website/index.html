@@ -7,7 +7,48 @@
 
 </head>
 <body>
-    
+    <form class="needs-validation" novalidate>
+        <div class="ms-3 pe-5 me-5 pt-3">
+            <div class="mb-3">
+                <label for="selection" >Priority</label>
+                <select class="form-select form-select-sm w-25" id="selection" required>
+                    <option disabled selected value="">Select Priority</option>
+                    <option value="low">Low</option>
+                    <option value="mid">Medium</option>
+                    <option value="high">High</option>
+                </select>
+            </div>
+            <div class="mb-3 w-50 ">
+                <label for="title" class="form-label">Title</label>
+                <input class="form-control form-control-lg" id="title" placeholder="Something punchy..." required>
+            </div>
+            <div class="mb-3">
+              <label for="body" class="form-label">Message Body</label>
+              <textarea class="form-control" id="body" rows="3" placeholder="Detailed message..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+
+    </form>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script language="JavaScript">
+        (() => {
+        'use strict'
+          const forms = document.querySelectorAll('.needs-validation')
+          Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+              if (!form.checkValidity() || document.getElementById("selection").selectedIndex === 0) {
+                event.preventDefault()
+                event.stopPropagation()
+              }
+
+
+              form.classList.add('was-validated')
+            }, false)
+          })
+        })()
+
+    </script>
 </body>
 </html>
