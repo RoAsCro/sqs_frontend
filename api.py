@@ -33,7 +33,7 @@ def post_message():
             case "low":
                 queue_url = low_priority
             case _:
-                return "Unrecognised priority level - should be either low, mid, or high"
+                return "Unrecognised priority level - should be either low, mid, or high", 400
 
         sqs.send_message(QueueUrl=queue_url,
                          DelaySeconds=30,
