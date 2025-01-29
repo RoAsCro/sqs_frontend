@@ -28,8 +28,10 @@ def post_message():
     if "title" in message and "message" in message and "priority" in message:
         match message["priority"]:
             case "high":
+                print(message)
+                print(json.dumps(message))
                 queue_url = high_priority
-            case "mid":
+            case "medium":
                 queue_url = mid_priority
             case "low":
                 queue_url = low_priority
