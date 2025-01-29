@@ -4,6 +4,9 @@ import boto3
 from botocore import exceptions
 from flask import Blueprint, request
 from dotenv import load_dotenv
+from pydantic import ValidationError
+
+from json_models import Message
 
 load_dotenv()
 high_priority = getenv("HIGH_PRIORITY_QUEUE")
@@ -24,33 +27,37 @@ router = Blueprint("messages", __name__, url_prefix="/api")
 @router.post("/")
 def post_message():
     message = request.json
-    if "title" in message and "message" in message and "priority" in message\
-            and len(message["title"]) > 0:
-        match message["priority"]:
-            case "high":
-                queue_url = high_priority
-            case "medium":
-                queue_url = mid_priority
-            case "low":
-                queue_url = low_priority
-            case _:
-                return "Unrecognised priority level - should be either low, mid, or high", 400
+    try:
+        Message.model_validate(message)
+    except ValidationError as ex:
+        error_string = "Errors in Json:\n"
+        for error in ex.errors():
+            error_string += (f"\tError in field {error['loc']}: {error['msg']}.\n"
+                             f"\tGot '{error['input']}'.\n\n")
+            
+        return error_string, 400
 
-        try :
-            response = sqs.send_message(QueueUrl=queue_url,
-                             DelaySeconds=30,
-                             MessageBody=json.dumps(message))
-        except exceptions.ClientError as ex :
-            return "Failed to send - internal server error", 500
+    match message["priority"]:
+        case "high":
+            queue_url = high_priority
+        case "medium":
+            queue_url = mid_priority
+        case "low":
+            queue_url = low_priority
+        case _:
+            return "Unrecognised priority level - should be either low, mid, or high", 400
 
-        message_id = response["MessageId"]
-        return (json.dumps({'message': 'Message sent',
-                'message_id': message_id})), 200
+    try :
+        response = sqs.send_message(QueueUrl=queue_url,
+                         DelaySeconds=30,
+                         MessageBody=json.dumps(message))
+    except exceptions.ClientError as ex :
+        return "Failed to send - internal server error", 500
 
-    else:
-        return (("Failed to send - message must include a priority (low, medium, or high)"
-                ", a title of at least one character, and a message."),
-                400)
+    message_id = response["MessageId"]
+    return (json.dumps({'message': 'Message sent',
+            'message_id': message_id})), 200
+
 
 @router.get("/")
 def get_options():
