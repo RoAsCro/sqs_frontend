@@ -23,11 +23,10 @@ router = Blueprint("messages", __name__, url_prefix="/api")
 @router.post("/")
 def post_message():
     message = request.json
-    if "title" in message and "message" in message and "priority" in message:
+    if "title" in message and "message" in message and "priority" in message\
+            and len(message["title"]) > 0:
         match message["priority"]:
             case "high":
-                print(message)
-                print(json.dumps(message))
                 queue_url = high_priority
             case "medium":
                 queue_url = mid_priority
@@ -36,13 +35,18 @@ def post_message():
             case _:
                 return "Unrecognised priority level - should be either low, mid, or high", 400
 
-        sqs.send_message(QueueUrl=queue_url,
+        response = sqs.send_message(QueueUrl=queue_url,
                          DelaySeconds=30,
-                         MessageBody=json.dumps(message)
+                         MessageBody=json.dumps(message),
                          )
-        return "Message sent", 200
+        message_id = response["MessageId"]
+
+        return (json.dumps({'message': 'Message sent',
+                'message_id': message_id})), 200
     else:
-        return "Failed to send - incorrect formatting", 400
+        return (("Failed to send - message must include a priority (low, medium, or high)"
+                ", a title of at least one character, and a message."),
+                400)
 
 @router.get("/")
 def get_options():
