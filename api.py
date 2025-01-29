@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 load_dotenv()
 high_priority = getenv("HIGH_PRIORITY_QUEUE")
 mid_priority = getenv("MID_PRIORITY_QUEUE")
+low_priority = getenv("LOW_PRIORITY_QUEUE")
 access_id = getenv("AWS_ACCESS_KEY_ID")
 access_key = getenv("AWS_SECRET_ACCESS_KEY")
 
@@ -29,8 +30,10 @@ def post_message():
                 queue_url = high_priority
             case "mid":
                 queue_url = mid_priority
+            case "low":
+                queue_url = low_priority
             case _:
-                raise ValueError("Not yet implemented")
+                return "Unrecognised priority level - should be either low, mid, or high"
 
         sqs.send_message(QueueUrl=queue_url,
                          DelaySeconds=30,
