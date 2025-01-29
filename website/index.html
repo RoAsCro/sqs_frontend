@@ -42,6 +42,7 @@
                 event.stopPropagation();
               } else {
                 query();
+                event.preventDefault();
               }
               form.classList.add('was-validated')
             }, false)

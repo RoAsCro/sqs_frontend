@@ -40,7 +40,7 @@ def post_message():
                          DelaySeconds=30,
                          MessageBody=json.dumps(message)
                          )
-        return "message sent", 200
+        return "Message sent", 200
     else:
-        return "failed to send", 500
+        return "Failed to send - incorrect formatting", 400
 
