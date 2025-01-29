@@ -42,7 +42,6 @@
                 event.stopPropagation();
               } else {
                 query();
-                event.preventDefault();
               }
               form.classList.add('was-validated')
             }, false)
@@ -62,7 +61,6 @@
             var data = JSON.stringify({"priority": selection.options[selection.selectedIndex].value,
                 "title": document.getElementById("title").value,
                 "message": document.getElementById("body").value});
-            console.log(document.getElementById("body").value)
             request.send(data);
         }
     </script>
