@@ -46,3 +46,14 @@ def post_message():
     else:
         return "Failed to send - incorrect formatting", 400
 
+@router.get("/")
+def get_options():
+    return ("To send a report: POST a JSON formatted:\n"
+            "{'priority': 'low' | 'medium' | 'high',\n"
+            "'title': string,\n"
+            "'message': string}"), 200
+
+@router.get("/health")
+def health_check():
+    return 200
+
