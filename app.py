@@ -1,7 +1,7 @@
 import os
 
 from flask import Flask
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 from api import router
 
 permitted_origins = os.getenv("PERMITTED_ORIGIN")

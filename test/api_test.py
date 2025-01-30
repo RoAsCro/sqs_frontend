@@ -1,12 +1,10 @@
-import json
-
+import boto3
 import pytest
-import moto
 from moto import mock_aws
-from api import error_in
 
 import api
 import app
+from api import error_in
 
 good_title = "Title"
 good_description = "A description"
@@ -33,6 +31,19 @@ def client(application):
 def runner(application):
     return application.test_cli_runner()
 
+
+@mock_aws
+def test_request_good_request(client):
+    mock_sqs = boto3.client("sqs", region_name='us-east-1')
+    high_priority_queue = mock_sqs.create_queue(QueueName = "high")['QueueUrl']
+    api.sqs = mock_sqs
+    api.high_priority = high_priority_queue
+    response = client.post("/api/", json=get_json_dict(
+        priority="high",
+        title=good_title,
+        description=good_description))
+    assert response.status_code == 200
+
 def test_request_bad_priority(client):
     response = client.post("/api/", json=get_json_dict(
         priority=bad_priority,
@@ -41,7 +52,8 @@ def test_request_bad_priority(client):
     print(response)
     expected_1 = f"{error_in} priority"
     expected_2 = f"{bad_priority}"
-    assert (bytes(expected_1, 'utf8') and bytes(expected_2, 'utf8')) in response.data
+    assert ((bytes(expected_1, 'utf8') and bytes(expected_2, 'utf8')) in response.data
+            and response.status_code == 400)
 
 def test_request_bad_title(client):
     response = client.post("/api/", json=get_json_dict(
@@ -51,7 +63,8 @@ def test_request_bad_title(client):
     print(response)
     expected_1 = f"{error_in} title"
     expected_2 = f"{bad_title}"
-    assert (bytes(expected_1, 'utf8') and bytes(expected_2, 'utf8')) in response.data
+    assert ((bytes(expected_1, 'utf8') and bytes(expected_2, 'utf8')) in response.data
+            and response.status_code == 400)
 
 def test_request_bad_title_and_priority(client):
     response = client.post("/api/", json=get_json_dict(
@@ -63,13 +76,11 @@ def test_request_bad_title_and_priority(client):
     expected_2 = f"{bad_title}"
     expected_3 = f"{error_in} priority"
     expected_4 = f"{bad_priority}"
-    assert ((bytes(expected_1, 'utf8') and bytes(expected_2, 'utf8')
+    assert (((bytes(expected_1, 'utf8') and bytes(expected_2, 'utf8')
             and bytes(expected_3, 'utf8') and bytes(expected_4, 'utf8'))
             in response.data)
+            and response.status_code == 400)
 
-# @mock_aws
-# def test_model():
-#     api.post_message()
 
 def get_json_dict(**kwargs):
     dictionary = {}
