@@ -33,13 +33,37 @@ def runner(application):
 
 
 @mock_aws
-def test_request_good_request(client):
+def test_request_good_request_high(client):
     mock_sqs = boto3.client("sqs", region_name='us-east-1')
-    high_priority_queue = mock_sqs.create_queue(QueueName = "high")['QueueUrl']
+    queue = mock_sqs.create_queue(QueueName = "high")['QueueUrl']
     api.sqs = mock_sqs
-    api.high_priority = high_priority_queue
+    api.high_priority = queue
     response = client.post("/api/", json=get_json_dict(
         priority="high",
+        title=good_title,
+        description=good_description))
+    assert response.status_code == 200
+
+@mock_aws
+def test_request_good_request_medium(client):
+    mock_sqs = boto3.client("sqs", region_name='us-east-1')
+    queue = mock_sqs.create_queue(QueueName="high")['QueueUrl']
+    api.sqs = mock_sqs
+    api.medium_priority = queue
+    response = client.post("/api/", json=get_json_dict(
+        priority="medium",
+        title=good_title,
+        description=good_description))
+    assert response.status_code == 200
+
+@mock_aws
+def test_request_good_request_low(client):
+    mock_sqs = boto3.client("sqs", region_name='us-east-1')
+    queue = mock_sqs.create_queue(QueueName="high")['QueueUrl']
+    api.sqs = mock_sqs
+    api.low_priority = queue
+    response = client.post("/api/", json=get_json_dict(
+        priority="low",
         title=good_title,
         description=good_description))
     assert response.status_code == 200
