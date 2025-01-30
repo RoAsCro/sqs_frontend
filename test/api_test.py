@@ -10,6 +10,7 @@ import app
 
 good_title = "Title"
 good_description = "A description"
+good_priority = "high"
 
 bad_title = ""
 bad_priority = "not a priority level"
@@ -40,7 +41,17 @@ def test_request_bad_priority(client):
     print(response)
     expected_1 = f"{error_in} priority"
     expected_2 = f"{bad_priority}"
-    assert bytes(expected_1, 'utf8') in response.data and bytes(expected_2, 'utf8')
+    assert bytes(expected_1, 'utf8') and bytes(expected_2, 'utf8') in response.data
+
+def test_request_bad_title(client):
+    response = client.post("/api/", json=get_json_dict(
+        priority=good_priority,
+        title=bad_title,
+        description=good_description))
+    print(response)
+    expected_1 = f"{error_in} title"
+    expected_2 = f"{bad_title}"
+    assert bytes(expected_1, 'utf8') and bytes(expected_2, 'utf8') in response.data
 
 # @mock_aws
 # def test_model():
