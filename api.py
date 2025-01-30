@@ -23,6 +23,7 @@ sqs = boto3.client("sqs",
 
 router = Blueprint("messages", __name__, url_prefix="/api")
 
+error_in = "Error in field"
 
 @router.post("/")
 def post_message():
@@ -32,9 +33,10 @@ def post_message():
     except ValidationError as ex:
         error_string = "Errors in Json:\n"
         for error in ex.errors():
-            error_string += (f"\tError in field {error['loc']}: {error['msg']}.\n"
+            location = error['loc'][0]
+            error_string += (f"\t{error_in} {location}: {error['msg']}.\n"
                              f"\tGot '{error['input']}'.\n\n")
-            
+
         return error_string, 400
 
     match message["priority"]:
@@ -44,7 +46,7 @@ def post_message():
             queue_url = mid_priority
         case "low":
             queue_url = low_priority
-        case _:
+        case _: # Should now be unreachable with above checking
             return "Unrecognised priority level - should be either low, mid, or high", 400
 
     try :
