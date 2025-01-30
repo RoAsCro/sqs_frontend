@@ -49,7 +49,7 @@ def test_request_good_request_medium(client):
     mock_sqs = boto3.client("sqs", region_name='us-east-1')
     queue = mock_sqs.create_queue(QueueName="high")['QueueUrl']
     api.sqs = mock_sqs
-    api.medium_priority = queue
+    api.mid_priority = queue
     response = client.post("/api/", json=get_json_dict(
         priority="medium",
         title=good_title,
