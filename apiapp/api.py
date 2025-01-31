@@ -38,6 +38,8 @@ def post_message():
                              f"\tGot '{error['input']}'.\n\n")
 
         return error_string, 400
+    if "message" not in message:
+        message.update({"message": ""})
 
     match message["priority"]:
         case "high":
@@ -49,17 +51,17 @@ def post_message():
         case _: # Should now be unreachable with above checking
             return "Unrecognised priority level - should be either low, mid, or high", 400
 
-    try :
+    try:
         response = sqs.send_message(QueueUrl=queue_url,
                          DelaySeconds=30,
                          MessageBody=json.dumps(message))
     except exceptions.ClientError as ex :
+        print(ex)
         return "Failed to send - internal server error", 500
 
     message_id = response["MessageId"]
     return (json.dumps({'message': 'Message sent',
             'message_id': message_id})), 200
-
 
 @router.get("/")
 def get_options():
