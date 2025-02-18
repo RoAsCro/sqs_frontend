@@ -6,7 +6,7 @@ from flask import Blueprint, request
 from dotenv import load_dotenv
 from pydantic import ValidationError
 
-from .json_models import Message
+from json_models import Message
 
 load_dotenv()
 high_priority = getenv("HIGH_PRIORITY_QUEUE")
