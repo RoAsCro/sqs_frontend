@@ -2,7 +2,7 @@ import os
 
 from flask import Flask
 from flask_cors import CORS
-from api import router
+from .api import router
 
 permitted_origins = os.getenv("PERMITTED_ORIGIN")
 
@@ -25,4 +25,4 @@ def create_app():
 
 if __name__ == "__main__":
     app = create_app()
-    app.run()
+    app.run(host="0.0.0.0")
