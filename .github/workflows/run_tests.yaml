@@ -17,5 +17,5 @@ jobs:
           
           
       - name: Run pytest
-        run: python -m pytest ./test
+        run: python -m pytest ${{ github.workspace }}/repo/test/
          
