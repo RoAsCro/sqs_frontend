@@ -14,6 +14,5 @@ jobs:
         uses: pavelzw/pytest-action@v2
         with:
           job-summary: true
-          custom-arguments: '-m'
           report-title: 'Test Report'
         
