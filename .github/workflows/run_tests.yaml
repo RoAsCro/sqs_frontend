@@ -13,8 +13,6 @@ jobs:
           pip3 install pytest   
       - name: checkout
         uses: actions/checkout@v4
-        with:
-          sparse-checkout: test
       - name: Run pytest
-        run: python -m pytest 
+        run: python -m pytest test
          
