@@ -13,8 +13,8 @@ jobs:
           pip3 install pytest
       - name: See filesystem
         run: |
-          cd D:\a\sqs_frontend\sqs_frontend
-          dir
+          dir D:\a\sqs_frontend\sqs_frontend
+          
           
       - name: Run pytest
         run: python -m pytest D:\a\sqs_frontend\sqs_frontend\
