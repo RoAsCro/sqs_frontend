@@ -6,7 +6,7 @@ on:
 jobs:
    Build:
     name: Build
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - name: pip
         run: |
