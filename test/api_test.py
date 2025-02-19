@@ -1,9 +1,11 @@
 import boto3
 import pytest
 from moto import mock_aws
-# import sys
-# sys.path.append('../apiapp')
-from apiapp import api, app
+import sys
+sys.path.append('../apiapp')
+import apiapp
+api = apiapp.api
+app = apiapp.app
 
 error_in = api.error_in
 
