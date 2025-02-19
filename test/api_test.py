@@ -1,11 +1,10 @@
 import boto3
 import pytest
 from moto import mock_aws
+# import sys
+# sys.path.append('../apiapp')
+from apiapp import api, app
 
-import apiapp.api, apiapp.app
-
-api = apiapp.api
-app = apiapp.app
 error_in = api.error_in
 
 good_title = "Title"
@@ -15,7 +14,7 @@ good_priority = "high"
 bad_title = ""
 bad_priority = "not a priority level"
 
-
+@mock_aws
 @pytest.fixture()
 def application():
     application = app.create_app()
@@ -39,6 +38,8 @@ def test_request_good_request_high(client):
     queue = mock_sqs.create_queue(QueueName = "high")['QueueUrl']
     api.sqs = mock_sqs
     api.high_priority = queue
+    client.application
+    new_queue = api.high_priority
     response = client.post("/api/", json=get_json_dict(
         priority="high",
         title=good_title,
