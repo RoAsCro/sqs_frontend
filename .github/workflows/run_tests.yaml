@@ -9,7 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: pip
-        run: pip3 install pytest
+        run: |
+          pip3 install pytest
+          pip3 install pytest-md
+          pip3 install pytest-emoji
       - name: Run pytest
         uses: pavelzw/pytest-action@v2
         with:
