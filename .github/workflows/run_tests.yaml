@@ -8,6 +8,8 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
+      - name: pip
+        run: pip3 install pytest
       - name: Run pytest
         uses: pavelzw/pytest-action@v2
         with:
