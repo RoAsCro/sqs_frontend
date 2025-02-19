@@ -17,5 +17,5 @@ jobs:
           
           
       - name: Run pytest
-        run: python -m pytest D:\a\sqs_frontend\sqs_frontend\
+        run: python -m pytest ./test
          
