@@ -1,0 +1,25 @@
+name: test script
+on: 
+  push:
+    branches:
+      actions
+jobs:
+   Build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: pip
+        run: |
+          pip3 install pytest
+          pip3 install pytest-md
+          pip3 install pytest-emoji
+      - name: Run pytest
+        uses: pavelzw/pytest-action@v2
+        with:
+          verbose: true
+          emoji: true
+          job-summary: true
+          custom-arguments: '-q'
+          click-to-expand: true
+          report-title: 'Test Report'
+        
