@@ -14,6 +14,7 @@ jobs:
       - name: pip
         run: |
           pip3 install pytest
+          pip3 install moto
           pip3 install -r ./apiapp/requirements.txt
 
       - name: Run pytest
