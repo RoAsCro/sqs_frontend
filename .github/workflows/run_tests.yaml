@@ -14,5 +14,5 @@ jobs:
       - name: See filesystem
         run: dir
       - name: Run pytest
-        run: python -m pytest test
+        run: python -m pytest D:\a\sqs_frontend\sqs_frontend\test
          
