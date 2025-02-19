@@ -2,8 +2,11 @@ import boto3
 import pytest
 from moto import mock_aws
 
-from apiapp import api, app
-from apiapp.api import error_in
+import apiapp.api, apiapp.app
+
+api = apiapp.api
+app = apiapp.app
+error_in = api.error_in
 
 good_title = "Title"
 good_description = "A description"
