@@ -8,5 +8,8 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
+      - name: pip
+        run: pip3 install pytest
       - name: run
         run: python -m pytest
+        
