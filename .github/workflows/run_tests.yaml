@@ -8,11 +8,14 @@ jobs:
     name: Build
     runs-on: windows-latest
     steps:
-      - name: pip
-        run: |
-          pip3 install pytest   
       - name: checkout
         uses: actions/checkout@v4
+    
+      - name: pip
+        run: |
+          pip3 install pytest
+          pip3 install -r ./requirements.txt
+
       - name: Run pytest
         run: python -m pytest test
          
