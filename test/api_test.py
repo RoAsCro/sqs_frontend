@@ -13,7 +13,6 @@ bad_title = ""
 bad_priority = "not a priority level"
 
 
-
 @pytest.fixture()
 def application():
     application = app.create_app()
