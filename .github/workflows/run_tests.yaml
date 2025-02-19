@@ -1,0 +1,12 @@
+name: test script
+on: 
+  push:
+    branches:
+      actions
+jobs:
+   Build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: run
+        run: python -m pytest
