@@ -37,5 +37,5 @@ jobs:
           IMAGE_TAG: ${{ steps.get-commit-hash.outputs.commit-hash }}-${{ steps.get-timestamp.outputs.timestamp }}
         run: |
           docker build -t $IMAGE_TAG .
-          docker tag $IMAGE_TAG
-          docker push $IMAGE_TAG ${{ secrets.REPO_URL }}
+          docker tag $IMAGE_TAG ${{ secrets.REPO_URL }}
+          docker push ${{ secrets.REPO_URL }}
