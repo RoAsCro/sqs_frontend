@@ -38,5 +38,5 @@ jobs:
           ECR_REPOSITORY: ${{ secrets.REPO_NAME }}
           IMAGE_TAG: ${{ steps.get-commit-hash.outputs.commit-hash }}-${{ steps.get-timestamp.outputs.timestamp }}
         run: |
-          docker build -t ${{ REPO_URL }}:$IMAGE_TAG .
-          docker push ${{ REPO_URL }}:$IMAGE_TAG
+          docker build -t ${{ secrets.REPO_URL }}:$IMAGE_TAG .
+          docker push ${{ secrets.REPO_URL }}:$IMAGE_TAG
