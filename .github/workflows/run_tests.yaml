@@ -18,5 +18,5 @@ jobs:
           pip3 install -r ./apiapp/requirements.txt
 
       - name: Run pytest
-        run: python3 -m pytest test
+        run: py -m venv pytest test
          
