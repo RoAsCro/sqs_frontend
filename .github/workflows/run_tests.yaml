@@ -2,7 +2,7 @@ name: test script
 on: 
   push:
     branches:
-      actions
+      test
 jobs:
    Build:
     name: Build
@@ -12,7 +12,10 @@ jobs:
         run: |
           pip3 install pytest
       - name: See filesystem
-        run: dir
+        run: |
+          cd D:\a\sqs_frontend\sqs_frontend
+          dir
+          
       - name: Run pytest
         run: python -m pytest D:\a\sqs_frontend\sqs_frontend\
          
