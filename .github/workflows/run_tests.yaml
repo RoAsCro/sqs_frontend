@@ -8,8 +8,10 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-      - name: pip
-        run: pip3 install pytest
-      - name: run
-        run: python -m pytest test
+      - name: Run pytest
+        uses: pavelzw/pytest-action@v2
+        with:
+          job-summary: true
+          custom-arguments: '-m'
+          report-title: 'Test Report'
         
