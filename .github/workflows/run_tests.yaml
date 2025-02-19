@@ -10,12 +10,7 @@ jobs:
     steps:
       - name: pip
         run: |
-          pip3 install pytest
-      - name: See filesystem
-        run: |
-          dir D:\a\sqs_frontend\sqs_frontend
-          
-          
+          pip3 install pytest          
       - name: Run pytest
-        run: python -m pytest ${{ github.workspace }}/repo/test/
+        run: python -m pytest ${{ github.workspace }}\repo\test
          
