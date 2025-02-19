@@ -11,6 +11,8 @@ jobs:
       - name: pip
         run: |
           pip3 install pytest
+      - name: See filesystem
+        run: dir
       - name: Run pytest
         run: python -m pytest test
          
