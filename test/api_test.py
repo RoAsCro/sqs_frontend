@@ -1,8 +1,7 @@
 import boto3
 import pytest
 from moto import mock_aws
-# import sys
-# sys.path.append('../apiapp')
+
 import apiapp
 api = apiapp.api
 app = apiapp.app
@@ -37,7 +36,7 @@ def runner(application):
 
 @mock_aws
 def test_request_good_request_high(client):
-    mock_sqs = boto3.client("sqs", region_name='us-east-1')
+    mock_sqs = boto3.client("sqs", region_name=api.default_region)
     queue = mock_sqs.create_queue(QueueName = "high")['QueueUrl']
     api.sqs = mock_sqs
     api.high_priority = queue
@@ -49,7 +48,7 @@ def test_request_good_request_high(client):
 
 @mock_aws
 def test_request_good_request_medium(client):
-    mock_sqs = boto3.client("sqs", region_name='us-east-1')
+    mock_sqs = boto3.client("sqs", region_name=api.default_region)
     queue = mock_sqs.create_queue(QueueName="high")['QueueUrl']
     api.sqs = mock_sqs
     api.mid_priority = queue
@@ -61,7 +60,7 @@ def test_request_good_request_medium(client):
 
 @mock_aws
 def test_request_good_request_low(client):
-    mock_sqs = boto3.client("sqs", region_name='us-east-1')
+    mock_sqs = boto3.client("sqs", region_name=api.default_region)
     queue = mock_sqs.create_queue(QueueName="high")['QueueUrl']
     api.sqs = mock_sqs
     api.low_priority = queue
