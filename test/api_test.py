@@ -40,8 +40,6 @@ def test_request_good_request_high(client):
     queue = mock_sqs.create_queue(QueueName = "high")['QueueUrl']
     api.sqs = mock_sqs
     api.high_priority = queue
-    client.application
-    new_queue = api.high_priority
     response = client.post("/api/", json=get_json_dict(
         priority="high",
         title=good_title,

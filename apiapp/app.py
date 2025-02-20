@@ -12,7 +12,7 @@ def create_app():
 
     CORS(api, origins=permitted_origins,
          methods=['GET', 'HEAD', 'POST', 'OPTIONS', 'PUT'],
-         headers=None,
+         # headers=None,
          supports_credentials=False,
          max_age=None,
          send_wildcard=True,
