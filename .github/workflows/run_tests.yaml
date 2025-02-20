@@ -1,4 +1,4 @@
-name: test script
+name: Run Tests
 on: 
   push:
     branches:

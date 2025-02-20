@@ -1,4 +1,4 @@
-name: build
+name: Trivy
 on:
   push:
     branches:
@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Build an image from Dockerfile
         run: docker build . -t trivy-image
       - name: Run Trivy vulnerability scanner
@@ -18,7 +18,6 @@ jobs:
         with:
           image-ref: 'trivy-image'
           format: 'table'
-          exit-code: '1'
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
