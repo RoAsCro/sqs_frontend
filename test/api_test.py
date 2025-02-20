@@ -19,6 +19,7 @@ bad_priority = "not a priority level"
 @mock_aws
 @pytest.fixture()
 def application():
+    app.permitted_origins = []
     application = app.create_app()
     application.config.update({
         "TESTING": True,
