@@ -28,9 +28,9 @@ jobs:
 
       - name: Run pytest
         run: |
-          echo PERMITTED_ORIGINS:[] > apipp\.env
+          echo PERMITTED_ORIGINS:[] > ${{ github.workspace }}\apipp\.env
           pip install pytest pytest-cov
           pytest test --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
-          del apipp\.env
+          del ${{ github.workspace }}\apipp\.env
         # py -m venv pytest test
          
