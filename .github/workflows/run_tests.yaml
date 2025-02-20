@@ -10,6 +10,12 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v4
+        
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+          cache: 'pip'
     
       - name: pip
         run: |
@@ -20,6 +26,6 @@ jobs:
       - name: Run pytest
         run: |
           pip install pytest pytest-cov
-          py -m venv test --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
+          py -m venv test --doctest-modules --cov=com --cov-report=xml --cov-report=html
         # py -m venv pytest test
          
