@@ -2,7 +2,8 @@ name: test script
 on: 
   push:
     branches:
-      test
+      - actions
+      - main
 jobs:
    Build:
     name: Build
