@@ -9,10 +9,10 @@ permitted_origins = os.getenv("PERMITTED_ORIGIN")
 def create_app():
     api = Flask(__name__)
     api.register_blueprint(router)
-
+    print(permitted_origins)
     CORS(api, origins=permitted_origins,
          methods=['GET', 'HEAD', 'POST', 'OPTIONS', 'PUT'],
-         headers=None,
+         # headers=None,
          supports_credentials=False,
          max_age=None,
          send_wildcard=True,
