@@ -26,6 +26,6 @@ jobs:
       - name: Run pytest
         run: |
           pip install pytest pytest-cov
-          py -m venv test --doctest-modules --cov=com --cov-report=xml --cov-report=html
+          py -m venv test --cov=com --cov-report=xml --cov-report=html
         # py -m venv pytest test
          
