@@ -24,9 +24,13 @@ jobs:
           pip install -r ./apiapp/requirements.txt
           # pip install cobertura
           # pip install junit
-          
+      - name: Create Environment
+        run: |
+          echo "PERMITTED_ORIGINS:"${{ secrets. }}
 
       - name: Run pytest
+        env:
+          PERMITTED_ORIGINS: "[]"
         run: |
           pip install pytest pytest-cov
           pytest test --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
