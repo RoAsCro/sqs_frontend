@@ -19,13 +19,16 @@ jobs:
     
       - name: pip
         run: |
-          pip3 install pytest
-          pip3 install moto
-          pip3 install -r ./apiapp/requirements.txt
+          pip install pytest
+          pip install moto
+          pip install -r ./apiapp/requirements.txt
+          # pip install cobertura
+          # pip install junit
+          
 
       - name: Run pytest
         run: |
           pip install pytest pytest-cov
-          py -m venv test --cov=com --cov-report=xml --cov-report=html
+          pytest tests.py --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
         # py -m venv pytest test
          
