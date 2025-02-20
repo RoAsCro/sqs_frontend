@@ -19,6 +19,7 @@ jobs:
     
       - name: pip
         run: |
+          python -m pip install --upgrade pip
           pip install pytest
           pip install moto
           pip install -r ./apiapp/requirements.txt
@@ -26,10 +27,10 @@ jobs:
           # pip install junit
 
       - name: Run pytest
-        env:
-          PERMITTED_ORIGINS: "[]"
         run: |
+          echo PERMITTED_ORIGINS:[] > ${{ GITHUB.WORKSPACE }}\.env
           pip install pytest pytest-cov
           pytest test --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
+          del ${{ GITHUB.WORKSPACE }}\.env
         # py -m venv pytest test
          
