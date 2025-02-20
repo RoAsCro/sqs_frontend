@@ -75,7 +75,6 @@ def test_request_bad_priority(client):
         priority=bad_priority,
         title=good_title,
         description=good_description))
-    print(response)
     expected_1 = f"{error_in} priority"
     expected_2 = f"{bad_priority}"
     assert ((bytes(expected_1, 'utf8') and bytes(expected_2, 'utf8')) in response.data
@@ -86,7 +85,6 @@ def test_request_bad_title(client):
         priority=good_priority,
         title=bad_title,
         description=good_description))
-    print(response)
     expected_1 = f"{error_in} title"
     expected_2 = f"{bad_title}"
     assert ((bytes(expected_1, 'utf8') and bytes(expected_2, 'utf8')) in response.data
@@ -97,7 +95,6 @@ def test_request_bad_title_and_priority(client):
         priority=bad_priority,
         title=bad_title,
         description=good_description))
-    print(response)
     expected_1 = f"{error_in} title"
     expected_2 = f"{bad_title}"
     expected_3 = f"{error_in} priority"
@@ -106,7 +103,6 @@ def test_request_bad_title_and_priority(client):
             and bytes(expected_3, 'utf8') and bytes(expected_4, 'utf8'))
             in response.data)
             and response.status_code == 400)
-
 
 def get_json_dict(**kwargs):
     dictionary = {}

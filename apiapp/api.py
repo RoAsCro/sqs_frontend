@@ -2,6 +2,7 @@ import json
 from os import getenv
 import boto3
 from botocore import exceptions
+from charset_normalizer.md import getLogger
 from flask import Blueprint, request
 from dotenv import load_dotenv
 from pydantic import ValidationError
@@ -27,7 +28,7 @@ sqs = boto3.client("sqs",
                    )
 
 router = Blueprint("messages", __name__, url_prefix="/api")
-
+logger = getLogger()
 error_in = "Error in field"
 
 @router.post("/")
@@ -61,7 +62,7 @@ def post_message():
                          DelaySeconds=30,
                          MessageBody=json.dumps(message))
     except exceptions.ClientError as ex :
-        print(ex)
+        logger.error(ex)
         return "Failed to send - internal server error", 500
 
     message_id = response["MessageId"]
