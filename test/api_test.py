@@ -71,9 +71,6 @@ def test_request_good_request_low(client):
         description=good_description))
     assert response.status_code == 200
 
-def test_fails():
-    assert True != True
-
 def test_request_bad_priority(client):
     response = client.post("/api/", json=get_json_dict(
         priority=bad_priority,
