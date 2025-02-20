@@ -8,14 +8,28 @@ jobs:
     name: Build
     runs-on: windows-latest
     steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+          cache: 'pip'
+    
       - name: pip
         run: |
-          pip3 install pytest
-      - name: See filesystem
-        run: |
-          dir D:\a\sqs_frontend\sqs_frontend
-          
-          
+          pip install pytest
+          pip install moto
+          pip install -r ./apiapp/requirements.txt
+          # pip install cobertura
+          # pip install junit
+
       - name: Run pytest
-        run: python -m pytest D:\a\sqs_frontend\sqs_frontend\
+        env:
+          PERMITTED_ORIGINS: "[]"
+        run: |
+          pip install pytest pytest-cov
+          pytest test --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
+        # py -m venv pytest test
          
