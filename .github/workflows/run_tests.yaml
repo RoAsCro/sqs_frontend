@@ -28,7 +28,7 @@ jobs:
 
       - name: Run pytest
         run: |
-          echo ${{ secrets.ENVIRONMENT_COPY }} > .env
+          echo ${{ secrets.ENVIRONMENT_COPY }} | base64 --decode > .env
           pip install pytest pytest-cov
           pytest test --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
           del .env
