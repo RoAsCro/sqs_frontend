@@ -25,14 +25,10 @@ jobs:
         with:
           registry-type: public
 
-      - name: Get commit hash
-        id: get-commit-hash
-        run: echo "::set-output name=commit-hash::$(git rev-parse --short HEAD)"
-
       - name: Build, tag, and push the image to Amazon ECR
         id: build-image
         env:
-          IMAGE_TAG: ${{ steps.get-commit-hash.outputs.commit-hash }}
+          IMAGE_TAG: queue_frontend
         run: |
           docker build -t ${{ secrets.REPO_URL }}:$IMAGE_TAG .
           docker push ${{ secrets.REPO_URL }}:$IMAGE_TAG
