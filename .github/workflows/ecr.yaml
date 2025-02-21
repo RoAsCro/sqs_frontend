@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - actions
-      - main
 jobs:
   Build:
     name: Build
@@ -25,7 +24,7 @@ jobs:
         with:
           registry-type: public
 
-      - name: Build, tag, and push the image to Amazon ECR
+      - name: Push to ECR
         id: build-image
         env:
           IMAGE_TAG: queue_frontend
