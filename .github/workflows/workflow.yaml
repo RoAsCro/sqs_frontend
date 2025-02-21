@@ -49,6 +49,7 @@ jobs:
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
   Sonarqube:
+    name: Sonarqube
     runs-on: ubuntu-latest
     needs: Test
     steps:
@@ -60,8 +61,8 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-  Build:
-    name: Build
+  Push:
+    name: Push to ECR
     needs: [Test, Trivy, Sonarqube]
     runs-on: ubuntu-latest
     steps:
