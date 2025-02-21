@@ -15,6 +15,8 @@ good_priority = "high"
 bad_title = ""
 bad_priority = "not a priority level"
 
+api_path = "/api/"
+
 @mock_aws
 @pytest.fixture()
 def application():
@@ -40,7 +42,7 @@ def test_request_good_request_high(client):
     queue = mock_sqs.create_queue(QueueName = "high")['QueueUrl']
     api.sqs = mock_sqs
     api.high_priority = queue
-    response = client.post("/api/", json=get_json_dict(
+    response = client.post(api_path, json=get_json_dict(
         priority="high",
         title=good_title,
         description=good_description))
@@ -52,7 +54,7 @@ def test_request_good_request_medium(client):
     queue = mock_sqs.create_queue(QueueName="high")['QueueUrl']
     api.sqs = mock_sqs
     api.mid_priority = queue
-    response = client.post("/api/", json=get_json_dict(
+    response = client.post(api_path, json=get_json_dict(
         priority="medium",
         title=good_title,
         description=good_description))
@@ -64,14 +66,14 @@ def test_request_good_request_low(client):
     queue = mock_sqs.create_queue(QueueName="high")['QueueUrl']
     api.sqs = mock_sqs
     api.low_priority = queue
-    response = client.post("/api/", json=get_json_dict(
+    response = client.post(api_path, json=get_json_dict(
         priority="low",
         title=good_title,
         description=good_description))
     assert response.status_code == 200
 
 def test_request_bad_priority(client):
-    response = client.post("/api/", json=get_json_dict(
+    response = client.post(api_path, json=get_json_dict(
         priority=bad_priority,
         title=good_title,
         description=good_description))
@@ -81,7 +83,7 @@ def test_request_bad_priority(client):
             and response.status_code == 400)
 
 def test_request_bad_title(client):
-    response = client.post("/api/", json=get_json_dict(
+    response = client.post(api_path, json=get_json_dict(
         priority=good_priority,
         title=bad_title,
         description=good_description))
@@ -91,7 +93,7 @@ def test_request_bad_title(client):
             and response.status_code == 400)
 
 def test_request_bad_title_and_priority(client):
-    response = client.post("/api/", json=get_json_dict(
+    response = client.post(api_path, json=get_json_dict(
         priority=bad_priority,
         title=bad_title,
         description=good_description))
