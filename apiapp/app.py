@@ -3,15 +3,16 @@ import os
 from flask import Flask
 from flask_cors import CORS
 from api import router
+import api
 
-permitted_origins = os.getenv("PERMITTED_ORIGIN")
+permitted_origins = os.getenv("PERMITTED_ORIGIN") or []
 
-def create_app():
-    api = Flask(__name__)
-    api.register_blueprint(router)
-    CORS(api, origins=permitted_origins,
+def create_app(mode="error"):
+    api.set_logger(mode)
+    api_app = Flask(__name__)
+    api_app.register_blueprint(router)
+    CORS(api_app, origins=permitted_origins,
          methods=['GET', 'HEAD', 'POST', 'OPTIONS', 'PUT'],
-         # headers=None,
          supports_credentials=False,
          max_age=None,
          send_wildcard=True,
@@ -19,9 +20,9 @@ def create_app():
          automatic_options=False
          )
 
-    return api
+    return api_app
 
 
 if __name__ == "__main__":
-    app = create_app()
+    app = create_app("debug")
     app.run(host="0.0.0.0")

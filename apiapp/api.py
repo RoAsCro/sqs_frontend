@@ -1,5 +1,6 @@
 import json
 import logging
+import sys
 from os import getenv
 
 import boto3
@@ -9,6 +10,9 @@ from flask import Blueprint, request
 from pydantic import ValidationError
 
 from json_models import Message
+logger = logging.getLogger()
+logger.addHandler(logging.StreamHandler(sys.stdout))
+logger.setLevel(logging.ERROR)
 
 default_region = "us-east-1"
 
@@ -31,6 +35,13 @@ sqs = boto3.client("sqs",
 router = Blueprint("messages", __name__, url_prefix="/api")
 
 error_in = "Error in field"
+
+def set_logger(mode):
+    if mode == "error":
+        logger.setLevel(logging.ERROR)
+    elif mode == "debug":
+        logger.setLevel(logging.DEBUG)
+
 
 @router.post("/")
 def post_message():
@@ -56,27 +67,33 @@ def post_message():
         case "low":
             queue_url = low_priority
         case _: # Should now be unreachable with above checking
-            return "Unrecognised priority level - should be either low, mid, or high", 400
+            return json.dumps({"Unrecognised priority level - should be either low, mid, or high"}), 400
 
     try:
+        logger.debug("Sending...")
         response = sqs.send_message(QueueUrl=queue_url,
                          DelaySeconds=30,
                          MessageBody=json.dumps(message))
+        message_id = response["MessageId"]
+        logger.debug(message_id + " sent")
     except exceptions.ClientError as ex :
-        logging.error(ex)
-        return "Failed to send - internal server error", 500
+        logger.error(f"Issue with client configuration:\n{ex}")
+        return json.dumps({"message":"Failed to send - internal server error"}), 500
 
-    message_id = response["MessageId"]
+    except TypeError as ex:
+        logger.error(f"Environment likely not initialised\n{ex}")
+        return json.dumps({"message": "Failed to send - internal server error"}), 500
+
     return (json.dumps({'message': 'Message sent',
             'message_id': message_id})), 200
 
 @router.get("/")
 def get_options():
-    return ("To send a report: POST a JSON formatted:\n"
-            "{'priority': 'low' | 'medium' | 'high',\n"
-            "'title': string,\n"
-            "'message': string}"), 200
+    return json.dumps({"message":("To send a report: POST a JSON formatted:"
+            "<p>{'priority': 'low' | 'medium' | 'high',</p>"
+            "<p>'title': string,</p>"
+            "<p>'message': string}</p>")}), 200
 
 @router.get("/health")
 def health_check():
-    return 'Ok', 200
+    return json.dumps({"message":"Ok"}), 200
