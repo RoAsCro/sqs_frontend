@@ -60,7 +60,6 @@ def post_message():
             count += 1
 
         error_string += "]"
-        print(error_string)
         return json.loads(error_string + '}'), 400
     if "message" not in message:
         message.update({"message": ""})
