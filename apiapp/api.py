@@ -49,13 +49,19 @@ def post_message():
     try:
         Message.model_validate(message)
     except ValidationError as ex:
-        error_string = "Errors in Json:\n"
+        error_string = '{"Errors in Json":['
+        count = 0
         for error in ex.errors():
+            if count > 0:
+                error_string += ","
             location = error['loc'][0]
-            error_string += (f"\t{error_in} {location}: {error['msg']}.\n"
-                             f"\tGot '{error['input']}'.\n\n")
+            error_string += ('{"1. location":"' + f"{location}" + '","2. error description":"' + f"{error['msg']}" + '","'
+                             '3. actual":"' + f"{error['input']}" + '"}')
+            count += 1
 
-        return error_string, 400
+        error_string += "]"
+        print(error_string)
+        return json.loads(error_string + '}'), 400
     if "message" not in message:
         message.update({"message": ""})
 
@@ -67,7 +73,7 @@ def post_message():
         case "low":
             queue_url = low_priority
         case _: # Should now be unreachable with above checking
-            return json.dumps({"Unrecognised priority level - should be either low, mid, or high"}), 400
+            return json.loads('{"Unrecognised priority level - should be either low, mid, or high"}'), 400
 
     try:
         logger.debug("Sending...")
@@ -78,22 +84,22 @@ def post_message():
         logger.debug(message_id + " sent")
     except exceptions.ClientError as ex :
         logger.error(f"Issue with client configuration:\n{ex}")
-        return json.dumps({"message":"Failed to send - internal server error"}), 500
+        return json.loads('{"message":"Failed to send - internal server error"}'), 500
 
     except TypeError as ex:
         logger.error(f"Environment likely not initialised\n{ex}")
-        return json.dumps({"message": "Failed to send - internal server error"}), 500
+        return json.loads('{"message": "Failed to send - internal server error"}'), 500
 
-    return (json.dumps({'message': 'Message sent',
-            'message_id': message_id})), 200
+    return (json.loads('{"message": "Message sent",'
+            '"message_id":"' + message_id+ '"}')), 200
 
 @router.get("/")
 def get_options():
-    return json.dumps({"message":("To send a report: POST a JSON formatted:"
-            "<p>{'priority': 'low' | 'medium' | 'high',</p>"
-            "<p>'title': string,</p>"
-            "<p>'message': string}</p>")}), 200
+    return json.loads('{"message":"To send a report: POST a JSON formatted: '
+                      '{priority: low | medium | high, '
+                      'title: string, '
+                      'message: string}"}'), 200
 
 @router.get("/health")
 def health_check():
-    return json.dumps({"message":"Ok"}), 200
+    return json.loads('{"message":"Ok"}'), 200
