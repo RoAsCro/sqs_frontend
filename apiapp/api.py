@@ -4,6 +4,7 @@ import sys
 from os import getenv
 
 import boto3
+import flask
 from botocore import exceptions
 from dotenv import load_dotenv
 from flask import Blueprint, request
@@ -32,7 +33,7 @@ sqs = boto3.client("sqs",
                    aws_secret_access_key=access_key
                    )
 
-router = Blueprint("messages", __name__, url_prefix="/api")
+router = Blueprint("messages", __name__, url_prefix="/")
 
 error_in = "Error in field"
 
@@ -42,8 +43,11 @@ def set_logger(mode):
     elif mode == "debug":
         logger.setLevel(logging.DEBUG)
 
+@router.route("/")
+def index():
+    return flask.render_template("index.html")
 
-@router.post("/")
+@router.post("/api")
 def post_message():
     message = request.json
     try:
@@ -92,7 +96,7 @@ def post_message():
     return (json.loads('{"message": "Message sent",'
             '"message_id":"' + message_id+ '"}')), 200
 
-@router.get("/")
+@router.get("/api")
 def get_options():
     return json.loads('{"message":"To send a report: POST a JSON formatted: '
                       '{priority: low | medium | high, '
