@@ -15,7 +15,7 @@ good_priority = "high"
 bad_title = ""
 bad_priority = "not a priority level"
 
-api_path = "/api/"
+api_path = "/api"
 
 @mock_aws
 @pytest.fixture()

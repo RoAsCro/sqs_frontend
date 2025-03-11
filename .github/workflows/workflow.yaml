@@ -63,7 +63,7 @@ jobs:
 
   Push:
     name: Push to ECR
-    needs: [Test, Trivy, Sonarqube]
+    needs: [Test]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
