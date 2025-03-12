@@ -62,12 +62,12 @@
                 var landing = document.getElementById("response")
 
                 if (request.status === 200){
-                    landing.classList.classList.remove("text-danger")
-                    landing.classList.classList.add("text-success")
+                    landing.classList.remove("text-danger")
+                    landing.classList.add("text-success")
                     landing.innerText = "Message sent successfully."
                 } else {
-                    landing.classList.classList.add("text-danger")
-                    landing.classList.classList.remove("text-success")
+                    landing.classList.add("text-danger")
+                    landing.classList.remove("text-success")
                     landing.innerText = "Message failed to send."
                 }
             };
