@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import boto3
 from botocore.exceptions import ClientError
 load_dotenv()
-region = getenv("AWS_REGION")
+region = "us-east-1"
 if region is None:
     region = "us-east-1"
 key = getenv("AWS_ACCESS_KEY_ID")
@@ -17,7 +17,7 @@ aws_access_key_id = key,
 aws_secret_access_key = key2
 )
 
-model_id = "amazon.titan-text-lite-v1"
+model_id = "amazon.titan-text-express-v1"
 def my_chatbot(user_message):
 
     conversation = [
