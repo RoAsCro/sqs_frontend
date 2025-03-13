@@ -51,7 +51,7 @@ def index():
 
 
 def suggest(message):
-    suggestion = "\nAutomatically generated suggestion:" + my_chatbot(message['message'])
+    suggestion = "\nAutomatically generated suggestion: \n" + my_chatbot(message['message'])
     message["message"] += suggestion
 
 @router.post("/api")

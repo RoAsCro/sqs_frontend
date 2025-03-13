@@ -23,7 +23,7 @@ def my_chatbot(user_message):
     conversation = [
         {
             "role": "user",
-            "content": [{"text":"How do I fix this:" + user_message}],
+            "content": [{"text":"Provide a suggestion to ix the following problem (if you require additional details, simply write 'Cannot provide an automated suggestion.'):" + user_message}],
         }
     ]
     try:
