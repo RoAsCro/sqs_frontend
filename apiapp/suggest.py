@@ -23,7 +23,7 @@ def my_chatbot(user_message):
     conversation = [
         {
             "role": "user",
-            "content": [{"text":"Provide a suggestion to ix the following problem (if you require additional details, simply write 'Cannot provide an automated suggestion.'):" + user_message}],
+            "content": [{"text":"Provide a suggestion to fix the following problem without asking for additional information: " + user_message}],
         }
     ]
     try:
@@ -40,5 +40,5 @@ def my_chatbot(user_message):
     except (ClientError, Exception) as e:
         print(f"ERROR: Can't invoke '{model_id}'. Reason: {e}")
 
-# if __name__ == "__main__":
-#     print(my_chatbot("Test message"))
+if __name__ == "__main__":
+    print(my_chatbot("Service is giving a region error when sending an SQS queue"))
