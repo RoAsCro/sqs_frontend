@@ -6,6 +6,8 @@ import boto3
 from botocore.exceptions import ClientError
 load_dotenv()
 region = getenv("AWS_REGION")
+if region is None:
+    region = "us-east-1"
 key = getenv("AWS_ACCESS_KEY_ID")
 key2 = getenv("AWS_SECRET_ACCESS_KEY")
 bedrock_client = boto3.client(
