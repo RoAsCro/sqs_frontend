@@ -10,6 +10,8 @@ from dotenv import load_dotenv
 from flask import Blueprint, request
 from pydantic import ValidationError
 
+from suggest import my_chatbot
+
 from json_models import Message
 logger = logging.getLogger()
 logger.addHandler(logging.StreamHandler(sys.stdout))
@@ -47,6 +49,11 @@ def set_logger(mode):
 def index():
     return flask.render_template("index.html")
 
+
+def suggest(message):
+    suggestion = "\nAutomatically generated suggestion:" + my_chatbot(message['message'])
+    message["message"] += suggestion
+
 @router.post("/api")
 def post_message():
     message = request.json
@@ -79,6 +86,8 @@ def post_message():
             return json.loads('{"Unrecognised priority level - should be either low, mid, or high"}'), 400
 
     try:
+        logger.debug("Requesting AI suggestion...")
+        suggest(message)
         logger.debug("Sending...")
         response = sqs.send_message(QueueUrl=queue_url,
                          DelaySeconds=30,

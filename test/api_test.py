@@ -22,6 +22,7 @@ api_path = "/api"
 def application():
     app.permitted_origins = []
     application = app.create_app()
+    api.suggest = lambda message : "No fix suggested."
     application.config.update({
         "TESTING": True,
     })
