@@ -40,5 +40,5 @@ def my_chatbot(user_message):
     except (ClientError, Exception) as e:
         print(f"ERROR: Can't invoke '{model_id}'. Reason: {e}")
 
-if __name__ == "__main__":
-    print(my_chatbot("Service is giving a region error when sending an SQS queue"))
+# if __name__ == "__main__":
+#     print(my_chatbot("Service is giving a region error when sending an SQS queue"))
